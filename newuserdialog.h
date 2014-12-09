@@ -4,24 +4,19 @@
 #include <QDialog>
 
 namespace Ui {
-class NewUserDialog;
+class newuserdialog;
 }
 
-class NewUserDialog : public QDialog
+class newuserdialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit NewUserDialog(QWidget *parent = 0);
-    ~NewUserDialog();
-
-private slots:
-    void on_pushButton_clicked();
-
-    void on_pushButtonCreateUser_clicked();
+    explicit newuserdialog(QWidget *parent = 0);
+    ~newuserdialog();
 
 private:
-    Ui::NewUserDialog *ui;
+    Ui::newuserdialog *ui;
 };
 
 #endif // NEWUSERDIALOG_H
