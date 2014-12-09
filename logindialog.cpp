@@ -4,7 +4,7 @@
 #include "loginrequest.h"
 #include "settingshandler.h"
 #include "firstsettingdialog.h"
-#include "mainwindow.h"
+//#include "mainwindow.h"
 
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),

@@ -15,7 +15,6 @@ TEMPLATE = app
 QT += network
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     firstsettingdialog.cpp \
     logindialog.cpp \
     loginrequest.cpp \
@@ -23,14 +22,14 @@ SOURCES += main.cpp\
     newuserrequest.cpp \
     settingshandler.cpp \
     settingsdialog.cpp \
-    filesendrequest.cpp \
     sendfiletoserverdialog.cpp \
     newnotedialog.cpp \
-    newnoterequest.cpp \
     note.cpp \
-    getnotesrequest.cpp
+    filerequests.cpp \
+    noterequests.cpp \
+    mainwindow.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     firstsettingdialog.h \
     logindialog.h \
     loginrequest.h \
@@ -38,12 +37,12 @@ HEADERS  += mainwindow.h \
     newuserrequest.h \
     settingshandler.h \
     settingsdialog.h \
-    filesendrequest.h \
     sendfiletoserverdialog.h \
     newnotedialog.h \
-    newnoterequest.h \
     note.h \
-    getnotesrequest.h
+    filerequests.h \
+    noterequests.h \
+    mainwindow.h
 
 FORMS    += mainwindow.ui \
     firstsettingdialog.ui \
