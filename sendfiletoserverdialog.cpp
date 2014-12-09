@@ -1,6 +1,6 @@
 #include "sendfiletoserverdialog.h"
 #include "ui_sendfiletoserverdialog.h"
-#include "filesendrequest.h"
+#include "filerequests.h"
 #include <QString>
 #include <QFileDialog>
 #include "settingshandler.h"
@@ -26,7 +26,7 @@ void SendFileToServerDialog::on_btnSendFile_clicked()
 {
     SettingsHandler settingsHandler;
 
-    FileSendRequest fileSendRequest(settingsHandler.getServerUrl(),ui->labelFileName->text(),settingsHandler.getUserID());
-    fileSendRequest.startSend();
+    FileRequests fileRequest(settingsHandler.getServerUrl(),settingsHandler.getUserID());
+    fileRequest.startSend(ui->labelFileName->text());
 
 }

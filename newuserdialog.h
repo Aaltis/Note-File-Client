@@ -1,25 +1,27 @@
 #ifndef NEWUSERDIALOG_H
 #define NEWUSERDIALOG_H
-#include "newuserrequest.h"
+
 #include <QDialog>
 
 namespace Ui {
-class newuserdialog;
+class NewUserDialog;
 }
 
-class newuserdialog : public QDialog
+class NewUserDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit newuserdialog(QWidget *parent = 0);
-    ~newuserdialog();
+    explicit NewUserDialog(QWidget *parent = 0);
+    ~NewUserDialog();
 
 private slots:
     void on_btnCreateUser_clicked();
 
+    void on_btn_CreateUser_clicked();
+
 private:
-    Ui::newuserdialog *ui;
+    Ui::NewUserDialog *ui;
 };
 
 #endif // NEWUSERDIALOG_H

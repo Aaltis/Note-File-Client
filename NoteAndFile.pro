@@ -5,8 +5,8 @@
 #-------------------------------------------------
 
 QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4):QT += widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = NoteAndFile
 TEMPLATE = app
@@ -15,37 +15,36 @@ TEMPLATE = app
 QT += network
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     firstsettingdialog.cpp \
     logindialog.cpp \
     loginrequest.cpp \
     newuserrequest.cpp \
     settingshandler.cpp \
     settingsdialog.cpp \
-    filesendrequest.cpp \
     sendfiletoserverdialog.cpp \
     newnotedialog.cpp \
-    newnoterequest.cpp \
     note.cpp \
-    getnotesrequest.cpp \
+    filerequests.cpp \
+    noterequests.cpp \
+    mainwindow.cpp \
     newuserdialog.cpp \
-    filerequests.cpp
+    userrequests.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     firstsettingdialog.h \
     logindialog.h \
     loginrequest.h \
     newuserrequest.h \
     settingshandler.h \
     settingsdialog.h \
-    filesendrequest.h \
     sendfiletoserverdialog.h \
     newnotedialog.h \
-    newnoterequest.h \
     note.h \
-    getnotesrequest.h \
+    filerequests.h \
+    noterequests.h \
+    mainwindow.h \
     newuserdialog.h \
-    filerequests.h
+    userrequests.h
 
 FORMS    += mainwindow.ui \
     firstsettingdialog.ui \

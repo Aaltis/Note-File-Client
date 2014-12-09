@@ -1,6 +1,7 @@
 #include "newnotedialog.h"
 #include "ui_newnotedialog.h"
 #include "settingshandler.h"
+#include "noterequests.h"
 NewNoteDialog::NewNoteDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::NewNoteDialog)
@@ -16,10 +17,8 @@ NewNoteDialog::~NewNoteDialog()
 void NewNoteDialog::on_btnSave_clicked()
 {
     SettingsHandler settingsHandler;
-
-
-    NewNoteRequest newNoteRequest(settingsHandler.getUserID(),ui->lineEditTitle->text(),ui->textEditTextBody->toPlainText());
-    QString response=newNoteRequest.SendRequest();
+    NoteRequests noteRequest(settingsHandler.getServerUrl(),settingsHandler.getUserID());
+    QString response=noteRequest.createNote(ui->lineEditTitle->text(),ui->textEditTextBody->toPlainText());
     if(response=="success")
     {
       this->destroy();

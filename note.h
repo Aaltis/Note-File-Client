@@ -4,12 +4,15 @@
 class Note
 {
 public:
-    Note(int noteid,QString ownerId,QString title,QString body);
+    Note(int noteid,int ownerId,QString title,QString body);
+    Note();
+    int getId();
+    int getOwner();
     QString getTitle();
     QString getBody();
 private:
     int id;
-    QString sOwnerId;
+    int sOwnerId;
     QString sTitle;
     QString sTextbody;
 };

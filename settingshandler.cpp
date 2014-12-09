@@ -20,12 +20,16 @@ void SettingsHandler::saveServerUrlRemote(QString url)
 {
     QSettings settings("mySettings", QSettings::NativeFormat);
     settings.setValue("serverurl", url);
+    settings.sync();
+
 }
 
 void SettingsHandler::saveServerUrlLocal()
 {
     QSettings settings("mySettings", QSettings::NativeFormat);
     settings.setValue("serverurl", "http://127.0.0.1:5000");
+    settings.sync();
+
 }
 void SettingsHandler::saveLoginData(QString name,QString password,QString userid)
 {
@@ -33,6 +37,7 @@ void SettingsHandler::saveLoginData(QString name,QString password,QString userid
     settings.setValue("name", name);
     settings.setValue("password", password);
     settings.setValue("userid", userid);
+    settings.sync();
 }
 void SettingsHandler::loadLoginData()
 {

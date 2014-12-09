@@ -1,10 +1,11 @@
 #include "logindialog.h"
 #include "ui_logindialog.h"
 #include "newuserdialog.h"
-#include "loginrequest.h"
+#include "userrequests.h"
 #include "settingshandler.h"
 #include "firstsettingdialog.h"
-#include "mainwindow.h"
+#include "newuserdialog.h"
+//#include "mainwindow.h"
 
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
@@ -35,25 +36,20 @@ bool LoginDialog::checkIfLoginData(QString data[] ){
 
 void LoginDialog::on_btnUser_clicked()
 {
-    newuserdialog newuser;
+    NewUserDialog newuser;
     newuser.setModal(true);
     newuser.exec();
 }
 
 void LoginDialog::on_btnLogin_clicked()
 {
-    LoginRequest lRequest(ui->lineEditUsername->text(),ui->lineEditPassword->text());
-    int result=lRequest.sendRequest();
+    UserRequests userRequest;
+    int result=userRequest.login(ui->lineEditUsername->text(),ui->lineEditPassword->text());
     if(result!=0)
     {
-        if(ui->checkboxRemember->isChecked())
-        {
-            SettingsHandler settingHandler;
-            settingHandler.saveLoginData(ui->lineEditUsername->text(),ui->lineEditPassword->text(),QString::number(result));
-
-        }
+        SettingsHandler settingHandler;
+        settingHandler.saveLoginData(ui->lineEditUsername->text(),ui->lineEditPassword->text(),QString::number(result));
         this->destroy();
-
     }
 
 }

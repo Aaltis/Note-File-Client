@@ -34,6 +34,7 @@ int LoginRequest::sendRequest(){
 
     eventLoop.exec(); // blocks stack until "finished()" has been called
     if (reply->error() == QNetworkReply::NoError) {
+        QString strReply = (QString)reply->readAll();
 
         QJsonParseError jerror;
         QJsonDocument jdoc= QJsonDocument::fromJson(reply->readAll(),&jerror);
@@ -44,7 +45,6 @@ int LoginRequest::sendRequest(){
         QJsonObject obj = jdoc.object();
         int userid = obj["userid"].toInt();
         return userid;
-
 
     }
     else {
