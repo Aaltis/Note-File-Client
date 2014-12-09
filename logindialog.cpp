@@ -46,14 +46,9 @@ void LoginDialog::on_btnLogin_clicked()
     int result=lRequest.sendRequest();
     if(result!=0)
     {
-        if(ui->checkboxRemember->isChecked())
-        {
-            SettingsHandler settingHandler;
-            settingHandler.saveLoginData(ui->lineEditUsername->text(),ui->lineEditPassword->text(),QString::number(result));
-
-        }
+        SettingsHandler settingHandler;
+        settingHandler.saveLoginData(ui->lineEditUsername->text(),ui->lineEditPassword->text(),QString::number(result));
         this->destroy();
-
     }
 
 }

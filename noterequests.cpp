@@ -63,6 +63,48 @@ QList<Note> NoteRequests::getNotes(){
         return notes;
     }
 }
+QString NoteRequests::getNote(int id){
+
+    // create custom temporary event loop on stack
+
+
+    // "quit()" the event-loop, when the network request "finished()"
+    QString fullServerPath=serverUrl+"/getnote?id=";
+    QUrl url(fullServerPath+id);
+    QNetworkAccessManager mgr;
+
+    // the HTTP request
+
+    QNetworkRequest networkRequest(url);
+    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QEventLoop eventLoop;
+
+    QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+
+
+    QNetworkReply *reply = mgr.get(networkRequest);
+    eventLoop.exec(); // blocks stack until "finished()" has been called
+    if (reply->error() == QNetworkReply::NoError) {
+
+        QJsonParseError jerror;
+        QJsonDocument jdoc= QJsonDocument::fromJson(reply->readAll(),&jerror);
+        if(jerror.error != QJsonParseError::NoError)
+        {
+            return NULL;
+        }
+        QJsonObject obj = jdoc.object();
+        QString text = obj["notetext"].toString();
+        return text;
+
+
+    }
+    else {
+        //failure
+        qDebug() << "Failure" <<reply->errorString();
+        delete reply;
+        return 0;
+    }
+}
 QString NoteRequests::createNote(QString sTitle,QString sBodytext){
 
     QEventLoop eventLoop;
@@ -72,7 +114,7 @@ QString NoteRequests::createNote(QString sTitle,QString sBodytext){
     QByteArray jsonString = QByteArray("{");
     jsonString.append("\"userid\":");
     jsonString.append("\"");
-    jsonString.append(userId.toInt());
+    jsonString.append(userId);
     jsonString.append("\"");
     jsonString.append(",\"title\":");
     jsonString.append("\"");

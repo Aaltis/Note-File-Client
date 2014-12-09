@@ -11,6 +11,7 @@
 #include <qjsondocument.h>
 #include <qjsonobject.h>
 #include <qjsonarray.h>
+
 class NoteRequests
 {
 public:
@@ -19,6 +20,7 @@ public:
     QString createNote(QString sTitle,QString sBodytext);
     void updateNote(Note);
     QList<Note>  getNotes();
+    QString getNote(int id);
 private:
     QString serverUrl;
     QString userId;
