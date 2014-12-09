@@ -12,3 +12,9 @@ newuserdialog::~newuserdialog()
 {
     delete ui;
 }
+
+void newuserdialog::on_btnCreateUser_clicked()
+{
+    NewUserRequest nUser(ui->lineEditUsername->text(),ui->lineEditPassword1->text(),ui->lineEditPassword2->text());
+    nUser.sendRequest();
+}

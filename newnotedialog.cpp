@@ -1,6 +1,5 @@
 #include "newnotedialog.h"
 #include "ui_newnotedialog.h"
-#include "newnoterequest.h"
 #include "settingshandler.h"
 NewNoteDialog::NewNoteDialog(QWidget *parent) :
     QDialog(parent),

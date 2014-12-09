@@ -35,7 +35,7 @@ bool LoginDialog::checkIfLoginData(QString data[] ){
 
 void LoginDialog::on_btnUser_clicked()
 {
-    NewUserDialog newuser;
+    newuserdialog newuser;
     newuser.setModal(true);
     newuser.exec();
 }
