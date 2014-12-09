@@ -8,8 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     ui->btnSaveChanges->setDisabled(true);
+
     SettingsHandler settingsHandler;
-    noteRequests=new NoteRequests(settingsHandler.getServerUrl());
+    noteRequests=new NoteRequests(settingsHandler.getServerUrl(),settingsHandler.getUserID());
 }
 
 MainWindow::~MainWindow()
@@ -20,7 +21,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_btnResreshList_clicked()
 {
     notes.clear();
-    ui->listWidgetNotes->clear();
     SettingsHandler settingsHandler;
 
     notes= noteRequests->getNotes(settingsHandler.getUserID());
@@ -41,8 +41,10 @@ void MainWindow::on_btnResreshList_clicked()
         QString sid=QString::number(notes[i].getId());
         QTableWidgetItem* title = new QTableWidgetItem( stitle);
         QTableWidgetItem* id = new QTableWidgetItem( sid);
+        title->setFlags(title->flags() &= ~Qt::ItemIsEditable);
         ui->tableWidgetNotes->setItem(i,0,title);
         ui->tableWidgetNotes->setItem(i,1,id);
+
     }
     connect(ui->tableWidgetNotes, SIGNAL(cellClicked(int,int)), this, SLOT(on_cell_clicked(int,int)) );
 }
@@ -50,6 +52,7 @@ void MainWindow::on_btnResreshList_clicked()
 void MainWindow::on_cell_clicked( int row, int column )
 {
     QString id = ui->tableWidgetNotes->item( row, 1 )->text();
+    selected=id;
     qDebug() << "id" <<id;
     ui->textEditNote->setPlainText(noteRequests->getNote(id));
 
@@ -59,18 +62,12 @@ void MainWindow::on_cell_clicked( int row, int column )
 
 void MainWindow::on_btnSaveChanges_clicked()
 {
+
     SettingsHandler settingsHandler;
-    ui->listWidgetNotes->clear();
-
-
-    noteRequests->updateNote(selectedNote);
+    noteRequests->updateNote(selected,settingsHandler.getUserID(),ui->textEditNote->toPlainText());
     notes.clear();
     notes= noteRequests->getNotes(settingsHandler.getUserID());
-    foreach(Note note,notes)
-    {
 
-        ui->listWidgetNotes->addItem(note.getTitle());
-    }
 }
 
 void MainWindow::on_btnNewNote_clicked()
@@ -94,14 +91,14 @@ void MainWindow::on_actionFirst_Time_Settings_triggered()
     fsettingdialog.exec();
 }
 
-void MainWindow::on_tableWidgetNotes_cellClicked(int row, int column)
-{
-    //QString id = ui->listWidgetNotes->item(row,1)->text();
-    //QString text=noteRequests->getNote(id);
-    //ui->textEditNote->setPlainText(text);
-}
+
 
 void MainWindow::on_textEditNote_textChanged()
 {
     ui->btnSaveChanges->setDisabled(false);
+}
+
+void MainWindow::on_btnDeleteNote_clicked()
+{
+
 }

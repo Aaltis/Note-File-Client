@@ -18,7 +18,7 @@ public:
     NoteRequests(QString url);
     NoteRequests(QString url,QString uId);
     QString createNote(QString sTitle,QString sBodytext);
-    void updateNote(Note);
+    void updateNote(QString selected, QString ownerid, QString text);
     QList<Note>  getNotes(QString userId);
     QString getNote(QString id);
 private:

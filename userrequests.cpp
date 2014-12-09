@@ -26,31 +26,6 @@ void UserRequests::createUser(QString sUserName,QString sPassword,QString sRepas
     jsonString.append("\"");
     jsonString.append("}");
 
-    /*QByteArray jsonString = QByteArray("{");
-    jsonString.append("\"emailaddress\":");
-    jsonString.append("\"username@domain.com\"");
-    jsonString.append(",\"password\":");
-    jsonString.append("\"mypass\"");
-    jsonString.append("}");*/
-
-    //postData = params.toEncoded(QUrl::RemoveFragment);
-    /*QByteArray postData;
-    QUrl params;
-    QUrlQuery query;
-    query.addQueryItem("emailaddress", "string1");
-    query.addQueryItem("password", "string2");
-
-    params.setQuery(query);
-
-    postData = params.toEncoded(QUrl::RemoveFragment);*/
-
-    /*QUrl params;
-       QUrlQuery query;
-       query.addQueryItem("emailaddress","aaa");
-       query.addQueryItem("password","ddd");
-
-       params.setQuery(query);
-       postData = params.toEncoded();*/
     QNetworkAccessManager mgr;
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
 

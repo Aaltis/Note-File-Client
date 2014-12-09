@@ -22,9 +22,12 @@ public:
     ~MainWindow();
     void showLoginDialog();
     QList<Note> notes;
-    Note selectedNote;
     void refreshNoteList(QList<Note>);
+private:
+    QString selected;
     NoteRequests* noteRequests;
+
+
 private slots:
     void on_btnResreshList_clicked();
 
@@ -39,7 +42,11 @@ private slots:
     void on_actionFirst_Time_Settings_triggered();
 
     void on_tableWidgetNotes_cellClicked(int row, int column);
-void on_cell_clicked( int row, int column );
+    void on_cell_clicked( int row, int column );
+    void on_textEditNote_textChanged();
+
+    void on_btnDeleteNote_clicked();
+
 private:
     Ui::MainWindow *ui;
 

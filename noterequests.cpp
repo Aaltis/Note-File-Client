@@ -150,32 +150,26 @@ QString NoteRequests::createNote(QString sTitle,QString sBodytext){
 
     }
 }
-void NoteRequests::updateNote(Note note){
+void NoteRequests::updateNote(QString selected,QString ownerid,QString text){
     QEventLoop eventLoop;
     // "quit()" the event-loop, when the network request "finished()"
     QUrl serviceUrl =QUrl(serverUrl+"/updatenote");
 
-    QString userid=QString::number(note.getId());
-    QString ownerid=QString::number(note.getOwner());
+
     QByteArray jsonString = QByteArray("{");
     jsonString.append("\"id\":");
     jsonString.append("\"");
-    jsonString.append(userid);
+    jsonString.append(selected);
     jsonString.append("\"");
-    jsonString.append("\"userid\":");
+    jsonString.append(",\"userid\":");
     jsonString.append("\"");
     jsonString.append(ownerid);
     jsonString.append("\"");
-    jsonString.append(",\"title\":");
+    jsonString.append(",\"text\":");
     jsonString.append("\"");
-    jsonString.append(note.getTitle());
-    jsonString.append("\"");
-    jsonString.append(",\"textbody\":");
-    jsonString.append("\"");
-    jsonString.append(note.getBody());
+    jsonString.append(text);
     jsonString.append("\"");
     jsonString.append("}");
-
 
     QNetworkAccessManager mgr;
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
@@ -183,7 +177,7 @@ void NoteRequests::updateNote(Note note){
     // the HTTP request
     QNetworkRequest networkRequest(serviceUrl);
     networkRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    QNetworkReply * reply= mgr.post(networkRequest,jsonString);
+    QNetworkReply * reply= mgr.put(networkRequest,jsonString);
     eventLoop.exec(); // blocks stack until "finished()" has been called
 
     if (reply->error() == QNetworkReply::NoError) {
