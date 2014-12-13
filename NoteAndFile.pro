@@ -17,8 +17,6 @@ QT += network
 SOURCES += main.cpp\
     firstsettingdialog.cpp \
     logindialog.cpp \
-    loginrequest.cpp \
-    newuserrequest.cpp \
     settingshandler.cpp \
     settingsdialog.cpp \
     sendfiletoserverdialog.cpp \
@@ -28,13 +26,12 @@ SOURCES += main.cpp\
     noterequests.cpp \
     mainwindow.cpp \
     newuserdialog.cpp \
-    userrequests.cpp
+    userrequests.cpp \
+    file.cpp
 
 HEADERS  += \
     firstsettingdialog.h \
     logindialog.h \
-    loginrequest.h \
-    newuserrequest.h \
     settingshandler.h \
     settingsdialog.h \
     sendfiletoserverdialog.h \
@@ -44,7 +41,8 @@ HEADERS  += \
     noterequests.h \
     mainwindow.h \
     newuserdialog.h \
-    userrequests.h
+    userrequests.h \
+    file.h
 
 FORMS    += mainwindow.ui \
     firstsettingdialog.ui \

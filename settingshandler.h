@@ -1,6 +1,10 @@
 #ifndef SETTINGSHANDLER_H
 #define SETTINGSHANDLER_H
 #include "qstring.h"
+#include <QApplication>
+#include <QSettings>
+#include <QString>
+#include <QDir>
 class SettingsHandler
 {
 public:

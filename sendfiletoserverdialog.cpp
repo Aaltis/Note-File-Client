@@ -1,9 +1,6 @@
 #include "sendfiletoserverdialog.h"
 #include "ui_sendfiletoserverdialog.h"
-#include "filerequests.h"
-#include <QString>
-#include <QFileDialog>
-#include "settingshandler.h"
+
 SendFileToServerDialog::SendFileToServerDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SendFileToServerDialog)
@@ -25,8 +22,17 @@ void SendFileToServerDialog::on_btnChooseFile_clicked()
 void SendFileToServerDialog::on_btnSendFile_clicked()
 {
     SettingsHandler settingsHandler;
-
     FileRequests fileRequest(settingsHandler.getServerUrl(),settingsHandler.getUserID());
+    QObject::connect(&fileRequest, SIGNAL(fileSend(QString)), this, SLOT(fileSend(QString)));
     fileRequest.startSend(ui->labelFileName->text());
+
+}
+void SendFileToServerDialog::fileSend(QString message)
+{
+    QMessageBox messageBox;
+    messageBox.information(0,"Success",message);
+    messageBox.setFixedSize(500,200);
+    this->destroy();
+    emit fileSend();
 
 }

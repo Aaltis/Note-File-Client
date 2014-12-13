@@ -1,16 +1,27 @@
 #include "userrequests.h"
 
-UserRequests::UserRequests()
+/*
+ * initialisation in every request needs serverurl and userid
+ */
+
+UserRequests::UserRequests(QString serverurl)
 {
+    serverUrl=serverurl;
 }
+
+UserRequests::~UserRequests(){
+
+}
+/*
+ * Funktion handles json post for backend for user creation
+ */
 void UserRequests::createUser(QString sUserName,QString sPassword,QString sRepassword){
     // create custom temporary event loop on stack
     QEventLoop eventLoop;
 
+    QUrl serviceUrl =QUrl(serverUrl+"/adduser");
 
-    // "quit()" the event-loop, when the network request "finished()"
-    QUrl serviceUrl =QUrl("http://127.0.0.1:5000/adduser");
-
+    //build jsonstring for send
     QByteArray jsonString = QByteArray("{");
     jsonString.append("\"emailaddress\":");
     jsonString.append("\"");
@@ -36,25 +47,28 @@ void UserRequests::createUser(QString sUserName,QString sPassword,QString sRepas
     eventLoop.exec(); // blocks stack until "finished()" has been called
 
     if (reply->error() == QNetworkReply::NoError) {
+        QString message=QString::number(parseLoginResult(reply));
         //success
         qDebug() << "Success" <<reply->readAll();
+        emit querySuccess(message);
         delete reply;
 
     }
     else {
         //failure
-        qDebug() << "Failure" <<reply->errorString();
+        QString message=parseReplyResult(reply);
+        emit queryFailure(message);
         delete reply;
     }
 }
-int UserRequests::login(QString sUserName,QString sPassword){
+/*
+ * Funktion handles json get for backend for user creation
+ */
+QString UserRequests::login(QString sUserName,QString sPassword){
     // create custom temporary event loop on stack
     QEventLoop eventLoop;
-
-
     // "quit()" the event-loop, when the network request "finished()"
-
-    QUrl url("http://127.0.0.1:5000/login?emailaddress=" + sUserName +"&password=" + sPassword);
+    QUrl url(serverUrl+"/login?emailaddress=" + sUserName +"&password=" + sPassword);
 
 
     QNetworkAccessManager mgr;
@@ -68,24 +82,51 @@ int UserRequests::login(QString sUserName,QString sPassword){
 
     eventLoop.exec(); // blocks stack until "finished()" has been called
     if (reply->error() == QNetworkReply::NoError) {
+        QString message=QString::number(parseLoginResult(reply));
+        //success
         qDebug() << "Success" <<reply->readAll();
-
-        QJsonParseError jerror;
-        QJsonDocument jdoc= QJsonDocument::fromJson(reply->readAll(),&jerror);
-        if(jerror.error != QJsonParseError::NoError)
-        {
-            return 0;
-        }
-        QJsonObject obj = jdoc.object();
-        int userid = obj["userid"].toInt();
-        return userid;
+        return message;
+        delete reply;
 
     }
     else {
         //failure
-        qDebug() << "Failure" <<reply->errorString();
+        QString message=parseReplyResult(reply);
+        //emit queryFailure(message);
+        return message;
         delete reply;
-        return 0;
     }
 }
+/*
+ * Parse regural text json results for furter useage
+ */
+QString UserRequests::parseReplyResult(QNetworkReply *reply){
+
+    QJsonParseError jerror;
+    QJsonDocument jdoc= QJsonDocument::fromJson(reply->readAll(),&jerror);
+    if(jerror.error != QJsonParseError::NoError)
+    {
+        return 0;
+    }
+    QJsonObject obj = jdoc.object();
+    QString result = obj["result"].toString();
+    return result;
+}
+/*
+ * Parse regural login result because its int.
+ */
+int UserRequests::parseLoginResult(QNetworkReply *reply){
+
+    QJsonParseError jerror;
+    QJsonDocument jdoc= QJsonDocument::fromJson(reply->readAll(),&jerror);
+    if(jerror.error != QJsonParseError::NoError)
+    {
+        return 0;
+    }
+    QJsonObject obj = jdoc.object();
+    int result = obj["result"].toInt();
+    return result;
+}
+
+
 

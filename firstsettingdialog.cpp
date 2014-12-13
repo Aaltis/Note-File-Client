@@ -3,6 +3,9 @@
 #include "settingshandler.h"
 #include "logindialog.h"
 #include <QDebug>
+/*
+ * Initialdialog for first time user.
+ */
 firstsettingdialog::firstsettingdialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::firstsettingdialog)
@@ -16,6 +19,9 @@ firstsettingdialog::~firstsettingdialog()
     delete ui;
 }
 
+/*
+ *save server url to setting and open logindialog.
+ */
 void firstsettingdialog::on_btnLocal_clicked()
 {
     SettingsHandler settingsHandler;
@@ -23,5 +29,4 @@ void firstsettingdialog::on_btnLocal_clicked()
     this->destroy();
     LoginDialog loginDialog;
     loginDialog.exec();
-
 }

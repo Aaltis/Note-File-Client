@@ -2,7 +2,7 @@
 #define NEWNOTEDIALOG_H
 
 #include <QDialog>
-
+#include <qmessagebox.h>
 namespace Ui {
 class NewNoteDialog;
 }
@@ -20,6 +20,11 @@ private slots:
 
 private:
     Ui::NewNoteDialog *ui;
+signals:
+    void noteCreated();
+public slots:
+    void querySuccess(QString result);
+    void queryFailure(QString result);
 };
 
 #endif // NEWNOTEDIALOG_H

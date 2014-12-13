@@ -2,7 +2,9 @@
 #define NEWUSERDIALOG_H
 
 #include <QDialog>
-
+#include "userrequests.h"
+#include <qmessagebox.h>
+#include "settingshandler.h"
 namespace Ui {
 class NewUserDialog;
 }
@@ -17,9 +19,11 @@ public:
 
 private slots:
     void on_btnCreateUser_clicked();
-
-    void on_btn_CreateUser_clicked();
-
+public slots:
+    void querySuccess(QString result);
+    void queryFailure(QString result);
+signals:
+    void userCreated();
 private:
     Ui::NewUserDialog *ui;
 };

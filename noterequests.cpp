@@ -1,5 +1,9 @@
 #include "noterequests.h"
+/*
+ * Class to handle calls to backend for note upload, download and deletion.
+ */
 
+//initialisation in every request needs serverurl and userid
 NoteRequests::NoteRequests(QString url)
 {
     serverUrl=url;
@@ -10,14 +14,14 @@ NoteRequests::NoteRequests(QString url,QString uId)
     userId=uId;
 
 }
+/*
+ * Get list of notes from backend and store them to note objects
+ */
 QList<Note> NoteRequests::getNotes(QString userId){
 
-    // create custom temporary event loop on stack
 
-
-    // "quit()" the event-loop, when the network request "finished()"
-    QString fullServerPath=serverUrl+"/getnotes?userid=";
-    QUrl url(fullServerPath+userId);
+    QString fullServerPath=serverUrl+"/getnotes?userid="+userId;
+    QUrl url(fullServerPath);
     QNetworkAccessManager mgr;
 
     // the HTTP request
@@ -27,11 +31,11 @@ QList<Note> NoteRequests::getNotes(QString userId){
     QEventLoop eventLoop;
 
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-
-
     QNetworkReply *reply = mgr.get(networkRequest);
     eventLoop.exec(); // blocks stack until "finished()" has been called
     QList <Note> notes;
+
+
     if (reply->error() == QNetworkReply::NoError) {
 
         QString strReply = (QString)reply->readAll();
@@ -44,17 +48,15 @@ QList<Note> NoteRequests::getNotes(QString userId){
 
         QJsonArray jsonArray = jsonObject["notes"].toArray();
 
+        //build note list
         foreach (const QJsonValue & value, jsonArray)
         {
             QJsonObject obj = value.toObject();
             Note note(obj["id"].toInt(),obj["ownerid"].toInt(),obj["title"].toString(),obj["text"].toString());
             notes.append(note);
 
-
         }
         return notes;
-
-
     }
     else {
         //failure
@@ -65,10 +67,6 @@ QList<Note> NoteRequests::getNotes(QString userId){
 }
 QString NoteRequests::getNote(QString id){
 
-    // create custom temporary event loop on stack
-
-
-    // "quit()" the event-loop, when the network request "finished()"
     QString fullServerPath=serverUrl+"/getnote?id=";
     QUrl url(fullServerPath+id);
     QNetworkAccessManager mgr;
@@ -103,10 +101,13 @@ QString NoteRequests::getNote(QString id){
         return 0;
     }
 }
+
+/*
+ * send json post to create note to database.
+ */
 QString NoteRequests::createNote(QString sTitle,QString sBodytext){
 
     QEventLoop eventLoop;
-    // "quit()" the event-loop, when the network request "finished()"
     QUrl serviceUrl =QUrl(serverUrl+"/createnote");
 
     QByteArray jsonString = QByteArray("{");
@@ -127,34 +128,36 @@ QString NoteRequests::createNote(QString sTitle,QString sBodytext){
 
     QNetworkAccessManager mgr;
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-
-    // the HTTP request
     QNetworkRequest networkRequest(serviceUrl);
+
+    //headers
     networkRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     QNetworkReply * reply= mgr.post(networkRequest,jsonString);
     eventLoop.exec(); // blocks stack until "finished()" has been called
 
     if (reply->error() == QNetworkReply::NoError) {
+        QString message=parseReplyResult(reply);
         //success
-        qDebug() << "Success" <<reply->readAll();
-
+        qDebug() << "Success" <<message;
+        emit querySuccess(message);
         delete reply;
-        return "success";
 
     }
     else {
         //failure
-        qDebug() << "Failure" <<reply->errorString();
+        QString message=parseReplyResult(reply);
+        emit queryFailure(message);
         delete reply;
-        return reply->errorString();
-
     }
 }
+
+/*
+ * Update notes text.
+ */
 void NoteRequests::updateNote(QString selected,QString ownerid,QString text){
     QEventLoop eventLoop;
     // "quit()" the event-loop, when the network request "finished()"
     QUrl serviceUrl =QUrl(serverUrl+"/updatenote");
-
 
     QByteArray jsonString = QByteArray("{");
     jsonString.append("\"id\":");
@@ -181,18 +184,64 @@ void NoteRequests::updateNote(QString selected,QString ownerid,QString text){
     eventLoop.exec(); // blocks stack until "finished()" has been called
 
     if (reply->error() == QNetworkReply::NoError) {
+        QString message=parseReplyResult(reply);
         //success
         qDebug() << "Success" <<reply->readAll();
-
+        emit querySuccess(message);
         delete reply;
-        //return "success";
 
     }
     else {
         //failure
-        qDebug() << "Failure" <<reply->errorString();
+        QString message=parseReplyResult(reply);
+        emit queryFailure(message);
         delete reply;
-        //return reply->errorString();
-
     }
 }
+void NoteRequests::deleteNote(QString selected,QString ownerid){
+
+    QEventLoop eventLoop;
+    QString fullUrl=serverUrl+"/deletenote?noteid=" + selected +"&ownerid=" + ownerid;
+    QUrl serviceurl(fullUrl);
+    QNetworkAccessManager mgr;
+    QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+
+    // the HTTP request
+    QNetworkRequest networkRequest(serviceurl);
+    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QNetworkReply * reply= mgr.deleteResource(networkRequest);
+    eventLoop.exec(); // blocks stack until "finished()" has been called
+
+    if (reply->error() == QNetworkReply::NoError) {
+        QString message=parseReplyResult(reply);
+        //success
+        qDebug() << "Success" <<reply->readAll();
+        emit noteDeleted();
+        delete reply;
+
+    }
+    else {
+        //failure
+        QString message=parseReplyResult(reply);
+        emit queryFailure(message);
+        delete reply;
+    }
+}
+/*
+ * Parse json reply
+ */
+QString NoteRequests::parseReplyResult(QNetworkReply *reply){
+
+    QJsonParseError jerror;
+    QJsonDocument jdoc= QJsonDocument::fromJson(reply->readAll(),&jerror);
+    if(jerror.error != QJsonParseError::NoError)
+    {
+        //     return 0;
+    }
+    QJsonObject obj = jdoc.object();
+    QString result = obj["result"].toString();
+    return result;
+}
+
+
+

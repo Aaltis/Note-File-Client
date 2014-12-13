@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>470</width>
+    <width>487</width>
     <height>557</height>
    </rect>
   </property>
@@ -14,19 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>240</y>
-      <width>141</width>
-      <height>251</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>GroupBox</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btnLoadFile">
     <property name="geometry">
      <rect>
@@ -56,9 +43,9 @@
    <widget class="QPushButton" name="btnResreshList">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>200</y>
-      <width>80</width>
+      <x>360</x>
+      <y>100</y>
+      <width>111</width>
       <height>23</height>
      </rect>
     </property>
@@ -69,8 +56,8 @@
    <widget class="QPushButton" name="btnNewNote">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>70</y>
+      <x>360</x>
+      <y>10</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -82,18 +69,18 @@
    <widget class="QTextEdit" name="textEditNote">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>140</x>
       <y>0</y>
       <width>211</width>
-      <height>191</height>
+      <height>221</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="btnSaveChanges">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>10</y>
+      <x>360</x>
+      <y>40</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -107,16 +94,16 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>101</width>
-      <height>192</height>
+      <width>121</width>
+      <height>221</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="btnDeleteNote">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>40</y>
+      <x>360</x>
+      <y>70</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -125,13 +112,36 @@
      <string>Delete</string>
     </property>
    </widget>
+   <widget class="QTableWidget" name="tableWidgetFiles">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>121</width>
+      <height>251</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnDeleteDile">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>310</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Delete File</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>470</width>
+     <width>487</width>
      <height>20</height>
     </rect>
    </property>

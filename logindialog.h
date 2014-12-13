@@ -2,6 +2,11 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
+#include "newuserdialog.h"
+#include "userrequests.h"
+#include "settingshandler.h"
+#include "firstsettingdialog.h"
+#include "newuserdialog.h"
 
 namespace Ui {
 class LoginDialog;
@@ -23,6 +28,8 @@ private slots:
 
 private:
     Ui::LoginDialog *ui;
+private slots:
+    void userCreated();
 };
 
 #endif // LOGINDIALOG_H

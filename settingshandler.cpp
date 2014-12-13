@@ -2,6 +2,9 @@
 #include <QApplication>
 #include <QSettings>
 #include <QString>
+/*
+ * Handles setting ini file.
+ */
 SettingsHandler::SettingsHandler()
 {
     QSettings settings("mySettings", QSettings::NativeFormat);
